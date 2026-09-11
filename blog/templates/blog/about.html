@@ -1,3 +1,6 @@
-<h1>About</h1>
-<p>{{ content }}</p>
-<p>This is a Simple blog application built with Django.</p>
+{% extends "blog/base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+  <h1>About {{ team }}</h1>
+  <p>This is a Django template. Variables use double curly braces.</p>
+{% endblock %}
