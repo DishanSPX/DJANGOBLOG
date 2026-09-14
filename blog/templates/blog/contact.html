@@ -1,3 +1,6 @@
-<h1>Contact</h1>
-<p>{{ content }}</p>
-<p>This is a Simple blog application built with Django.</p>
+{% extends "blog/base.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+  <h1>Contact</h1>
+  <p>{{ content }}</p>
+{% endblock %}
