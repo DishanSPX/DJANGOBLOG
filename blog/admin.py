@@ -7,3 +7,8 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ("status",)
     search_fields = ("title", "content")
     prepopulated_fields = {"slug": ("title",)}
+
+    class Media:
+        css = {
+            "all": ("blog/css/admin.css",)
+        }
