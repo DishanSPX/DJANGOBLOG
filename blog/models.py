@@ -1,14 +1,36 @@
 from django.db import models
 from django.utils.text import slugify
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     STATUS_CHOICES = [
-        ('draft', 'Draft'), ('published', 'Published')
+        ("draft", "Draft"),
+        ("published", "Published"),
     ]
+
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     content = models.TextField()
-    status = models.CharField (max_length=10, choices=STATUS_CHOICES, default='published')
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default="published"
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="posts",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -19,5 +41,3 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-
-# Create your models here.
