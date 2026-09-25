@@ -12,6 +12,13 @@ class Category(models.Model):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     STATUS_CHOICES = [
         ("draft", "Draft"),
@@ -28,6 +35,11 @@ class Post(models.Model):
         Category,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
+        related_name="posts",
+    )
+    tags = models.ManyToManyField(
+        Tag,
         blank=True,
         related_name="posts",
     )
