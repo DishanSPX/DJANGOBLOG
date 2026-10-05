@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import PostForm
 from .models import Post, Category
 
 
@@ -30,7 +31,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(CreateView):
     model = Post
-    fields = ["title", "content", "category", "tags", "status"]
+    form_class = PostForm
     template_name = "blog/post_form.html"
 
     def get_success_url(self):
@@ -39,7 +40,7 @@ class PostCreateView(CreateView):
 
 class PostUpdateView(UpdateView):
     model = Post
-    fields = ["title", "content", "category", "tags", "status"]
+    form_class = PostForm
     template_name = "blog/post_form.html"
 
     def get_success_url(self):
