@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from PIL import Image
@@ -43,6 +44,9 @@ class Post(models.Model):
         Tag,
         blank=True,
         related_name="posts",
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts"
     )
     cover_image = models.ImageField(upload_to="post_covers/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
