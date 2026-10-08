@@ -1,8 +1,9 @@
+from django.contrib.auth import login
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .forms import PostForm
+from .forms import PostForm, RegisterForm
 from .models import Post, Category
 
 
@@ -51,6 +52,17 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = "blog/post_confirm_delete.html"
     success_url = reverse_lazy("home")
+
+
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    template_name = "blog/register.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
 
 
 def about(request):
