@@ -1,5 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db import models
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
@@ -28,7 +30,12 @@ class PostDetailView(DetailView):
     context_object_name = "post"
 
     def get_queryset(self):
-        return Post.objects.filter(status="published")
+        post = Post.objects.filter(status="published")
+        if self.request.user.is_authenticated:
+            post = Post.objects.filter(
+                models.Q(status="published") | models.Q(author=self.request.user)
+            )
+        return post
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -39,6 +46,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "Post published successfully!")
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -54,6 +62,10 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         return self.get_object().author == self.request.user
 
+    def form_valid(self, form):
+        messages.success(self.request, "Post updated successfully!")
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy("post_detail", kwargs={"slug": self.object.slug})
 
@@ -66,6 +78,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.get_object().author == self.request.user
+
+    def form_valid(self, form):
+        messages.success(self.request, "Post deleted successfully!")
+        return super().form_valid(form)
 
 
 class MyPostsView(LoginRequiredMixin, ListView):
