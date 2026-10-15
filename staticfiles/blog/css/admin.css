@@ -1,0 +1,5 @@
+.form-row.field-slug label,
+label[for="id_slug"] {
+    color: var(--body-fg, #333) !important;
+    font-weight: 700 !important;
+}
