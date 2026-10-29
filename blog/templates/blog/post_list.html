@@ -1,24 +1,23 @@
 {% extends "blog/base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h2 class="text-center mb-4">Welcome to My Blog</h2>
-<div class="row">
+<section class="hero">
+  <div class="eyebrow"><span class="line"></span><span class="mono red">DjangoBlog / Notes</span></div>
+  <h1 class="hero-title">Notes on <span class="red">Django</span> &amp; PostgreSQL</h1>
+  <p class="hero-sub">Short articles from my backend development course: views, models, templates and databases.</p>
+</section>
+<div class="row g-4">
   {% for post in page_obj %}
     {% include "blog/partials/_post_card.html" %}
   {% empty %}
-    <div class="col-12">
-      <p class="text-center text-muted py-5">No posts yet – <a href="{% url 'post_create' %}">write the first one!</a></p>
-    </div>
+    <div class="col-12"><p class="text-center muted py-5">No posts yet. <a href="{% url 'post_create' %}">Write the first one!</a></p></div>
   {% endfor %}
 </div>
-
 {% include "blog/partials/_pagination.html" %}
-
-<hr>
-<h5>Categories</h5>
-<ul class="list-unstyled">
-  {% for category in categories %}
-    <li>{{ category.name }} ({{ category.posts.count }})</li>
-  {% endfor %}
-</ul>
+<div class="panel mt-5">
+  <h5 class="mono red mb-3">Categories</h5>
+  <div class="d-flex flex-wrap gap-2">
+    {% for category in categories %}<span class="chip">{{ category.name }} ({{ category.posts.count }})</span>{% endfor %}
+  </div>
+</div>
 {% endblock %}

@@ -1,19 +1,16 @@
-<div class="col-md-4 mb-4">
-  <div class="card h-100 shadow-sm">
-    {% if post.cover_image %}
-      <img src="{{ post.cover_image.url }}" class="card-img-top" alt="{{ post.title }}">
-    {% else %}
-      <div class="bg-secondary text-white text-center py-5">No Image</div>
-    {% endif %}
-    <div class="card-body">
-      <h5 class="card-title">{{ post.title }}</h5>
-      <p class="text-muted small">By {{ post.author.username }} · {{ post.created_at|date:"M d, Y" }}</p>
-      <p class="card-text">{{ post.content|truncatewords:20 }}</p>
-      <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary btn-sm">Read more</a>
+<div class="col-md-6 col-lg-4">
+  <article class="post-card h-100">
+    <a href="{% url 'post_detail' post.slug %}" class="thumb">
+      {% if post.cover_image %}<img src="{{ post.cover_image.url }}" alt="{{ post.title }}">{% else %}<div class="noimg mono">{{ post.category.name|default:"Post" }}</div>{% endif %}
+    </a>
+    <div class="p-4">
+      {% if post.category %}<div class="mono red tiny mb-2">{{ post.category.name }}</div>{% endif %}
+      <h3 class="card-h"><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
+      <p class="muted">{{ post.content|truncatewords:20 }}</p>
+      <div class="mono tiny muted">{{ post.created_at|date:"d M Y" }} &middot; {{ post.author.username }}</div>
       {% if post.author == request.user %}
-        <a href="{% url 'post_edit' post.slug %}" class="btn btn-outline-secondary btn-sm">Edit</a>
-        <a href="{% url 'post_delete' post.slug %}" class="btn btn-outline-danger btn-sm">Delete</a>
+        <div class="mt-3 d-flex gap-2"><a href="{% url 'post_edit' post.slug %}" class="btn-ghost">Edit</a><a href="{% url 'post_delete' post.slug %}" class="btn-ghost danger">Delete</a></div>
       {% endif %}
     </div>
-  </div>
+  </article>
 </div>
